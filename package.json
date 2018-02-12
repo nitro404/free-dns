@@ -1,0 +1,38 @@
+{
+  "name": "free-dns",
+  "version": "1.0.0",
+  "description": "A wrapper for the FreeDNS API.",
+  "main": "src/free-dns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitro404/free-dns.git"
+  },
+  "keywords": [
+    "free",
+    "dns",
+    "host",
+    "rest",
+    "api"
+  ],
+  "author": {
+    "name": "Kevin Scroggins"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nitro404/free-dns/issues"
+  },
+  "homepage": "https://github.com/nitro404/free-dns#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "extra-utilities": "^1.1.0",
+    "ip": "^1.1.5",
+    "node-envelope": "^1.0.0",
+    "sha1": "^1.1.1",
+    "validator": "^9.4.0",
+    "xml": "^1.0.1",
+    "xml2js": "^0.4.19"
+  }
+}
