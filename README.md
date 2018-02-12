@@ -15,6 +15,11 @@ This module is unofficial and is in no way associated with [FreeDNS](https://fre
 ```javascript
 var freeDNS = require("free-dns");
 
+freeDNS.setup({
+	userName: "nitro404",
+	password: "p4ssw0rd"
+});
+
 freeDNS.updateHosts(
 	{
 		host: "nitro404.freedns.org",
