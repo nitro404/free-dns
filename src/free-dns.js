@@ -9,57 +9,15 @@ var envelope = require("node-envelope");
 
 var freeDNS = { };
 
-freeDNS.apiAddress = "https://freedns.afraid.org";
-freeDNS.interface = "xml";
+var apiAddress = "https://freedns.afraid.org";
+var interface = "xml";
+var apiKey = null;
 
-freeDNS.setup = function(options) {
-	var formattedOptions = utilities.formatObject(
-		options,
-		{
-			key: {
-				type: "string",
-				trim: true,
-				nonEmpty: true,
-				nullable: false
-			},
-			userName: {
-				type: "string",
-				case: "lower",
-				trim: true,
-				nonEmpty: true,
-				nullable: false
-			},
-			password: {
-				type: "string",
-				trim: true,
-				nonEmpty: true,
-				nullable: false
-			}
-		},
-		{
-			throwErrors: true,
-			removeExtra: true
-		}
-	);
-
-	if(utilities.isNonEmptyString(formattedOptions.key)) {
-		freeDNS.apiKey = formattedOptions.key;
-	}
-	else {
-		if(utilities.isEmptyString(formattedOptions.userName) || utilities.isEmptyString(formattedOptions.password)) {
-			throw new Error("Missing FreeDNS API Key and / or user name / password.");
-		}
-		else {
-			freeDNS.apiKey = sha1(formattedOptions.userName + "|" + formattedOptions.password);
-		}
-	}
-};
-
-freeDNS.getValue = function(data) {
+function getValue(data) {
 	return utilities.isNonEmptyArray(data) ? data[0] : data;
-};
+}
 
-freeDNS.getToken = function(data) {
+function getToken function(data) {
 	var value = freeDNS.getValue(data);
 
 	if(utilities.isEmptyString(value)) {
@@ -75,25 +33,25 @@ freeDNS.getToken = function(data) {
 	return parts[1];
 }
 
-freeDNS.formatResult = function(data) {
+function formatResult(data) {
 	if(typeof data !== "string") {
 		return null;
 	}
 
 	return data.replace(/[\r\n]+$/, "");
-};
+}
 
-freeDNS.isError = function(data) {
-	var formattedData = freeDNS.formatResult(data);
+function isError(data) {
+	var formattedData = formatResult(data);
 
 	if(formattedData === null) {
 		return null;
 	}
 
 	return !!formattedData.match(/^error/gi);
-};
+}
 
-freeDNS.formatIPV4Address = function(ipAddress, throwErrors) {
+function formatIPV4Address(ipAddress, throwErrors) {
 	if(typeof ipAddress !== "string") {
 		if(throwErrors) {
 			throw new Error("IP address must be a string!");
@@ -123,7 +81,7 @@ freeDNS.formatIPV4Address = function(ipAddress, throwErrors) {
 	return formattedIPAddress;
 };
 
-freeDNS.formatHostName = function(hostName, throwErrors) {
+function formatHostName(hostName, throwErrors) {
 	if(typeof hostName !== "string") {
 		if(throwErrors) {
 			throw new Error("Host name must be a string!");
@@ -143,17 +101,17 @@ freeDNS.formatHostName = function(hostName, throwErrors) {
 	}
 
 	return formattedHostName;
-};
+}
 
-freeDNS.formatHost = function(host, ipAddress, throwErrors) {
+function formatHost(host, ipAddress, throwErrors) {
 	if(typeof ipAddress === "boolean") {
 		throwErrors = ipAddress;
 		ipAddress = null;
 	}
 
 	if(typeof host === "string") {
-		var formattedHostName = freeDNS.formatHostName(host, throwErrors);
-		var formattedIPAddress = freeDNS.formatIPV4Address(ipAddress, throwErrors);
+		var formattedHostName = formatHostName(host, throwErrors);
+		var formattedIPAddress = formatIPV4Address(ipAddress, throwErrors);
 
 		if(formattedHostName === null) {
 			if(throwErrors) {
@@ -177,15 +135,15 @@ freeDNS.formatHost = function(host, ipAddress, throwErrors) {
 		};
 	}
 	else if(utilities.isObject(host)) {
-		var formattedHostName = freeDNS.formatHostName(host.name, throwErrors);
+		var formattedHostName = formatHostName(host.name, throwErrors);
 		var formattedIPAddress = null;
 
 		if(utilities.isValid(host.ipAddress)) {
-			formattedIPAddress = freeDNS.formatIPV4Address(host.ipAddress, throwErrors);
+			formattedIPAddress = formatIPV4Address(host.ipAddress, throwErrors);
 		}
 
 		if(utilities.isValid(ipAddress) && (!utilities.isValid(formattedIPAddress) || ip.isPrivate(formattedIPAddress))) {
-			formattedIPAddress = freeDNS.formatIPV4Address(ipAddress, throwErrors);
+			formattedIPAddress = formatIPV4Address(ipAddress, throwErrors);
 		}
 
 		if(!utilities.isValid(formattedIPAddress)) {
@@ -207,9 +165,9 @@ freeDNS.formatHost = function(host, ipAddress, throwErrors) {
 	}
 
 	return null;
-};
+}
 
-freeDNS.parseHosts = function(data, includeToken, callback) {
+function parseHosts(data, includeToken, callback) {
 	if(utilities.isFunction(includeToken)) {
 		callback = includeToken;
 		includeToken = null;
@@ -249,13 +207,13 @@ freeDNS.parseHosts = function(data, includeToken, callback) {
 								host = hosts[i];
 
 								formattedHost = {
-									name: freeDNS.getValue(host.host),
-									ipAddress: freeDNS.getValue(host.address)
+									name: getValue(host.host),
+									ipAddress: getValue(host.address)
 								}
 
 								if(formattedIncludeToken) {
-									formattedHost.url = freeDNS.getValue(host.url);
-									formattedHost.token = freeDNS.getToken(host.url);
+									formattedHost.url = getValue(host.url);
+									formattedHost.token = getToken(host.url);
 								}
 
 								formattedHosts.push(formattedHost);
@@ -307,6 +265,49 @@ freeDNS.parseHosts = function(data, includeToken, callback) {
 			return callback(null, result);
 		}
 	);
+}
+
+freeDNS.setup = function(options) {
+	var formattedOptions = utilities.formatObject(
+		options,
+		{
+			key: {
+				type: "string",
+				trim: true,
+				nonEmpty: true,
+				nullable: false
+			},
+			userName: {
+				type: "string",
+				case: "lower",
+				trim: true,
+				nonEmpty: true,
+				nullable: false
+			},
+			password: {
+				type: "string",
+				trim: true,
+				nonEmpty: true,
+				nullable: false
+			}
+		},
+		{
+			throwErrors: true,
+			removeExtra: true
+		}
+	);
+
+	if(utilities.isNonEmptyString(formattedOptions.key)) {
+		apiKey = formattedOptions.key;
+	}
+	else {
+		if(utilities.isEmptyString(formattedOptions.userName) || utilities.isEmptyString(formattedOptions.password)) {
+			throw new Error("Missing FreeDNS API Key and / or user name / password.");
+		}
+		else {
+			apiKey = sha1(formattedOptions.userName + "|" + formattedOptions.password);
+		}
+	}
 };
 
 freeDNS.getHosts = function(includeToken, callback) {
@@ -319,7 +320,7 @@ freeDNS.getHosts = function(includeToken, callback) {
 		throw new Error("Missing callback function!");
 	}
 
-	if(utilities.isEmptyString(freeDNS.apiKey)) {
+	if(utilities.isEmptyString(apiKey)) {
 		return callback(new Error("Missing FreeDNS API key."));
 	}
 
@@ -331,25 +332,25 @@ freeDNS.getHosts = function(includeToken, callback) {
 
 	var query = {
 		action: "getdyndns",
-		sha: freeDNS.apiKey
+		sha: apiKey
 	};
 
-	if(freeDNS.interface !== "ascii") {
-		query.style = freeDNS.interface;
+	if(interface !== "ascii") {
+		query.style = interface;
 	}
 
 	return envelope.get(
 		"api",
 		query,
 		{
-			baseUrl: freeDNS.apiAddress
+			baseUrl: apiAddress
 		},
 		function(error, result) {
 			if(error) {
 				return callback(error);
 			}
 
-			return freeDNS.parseHosts(
+			return parseHosts(
 				result,
 				formattedIncludeToken,
 				function(error, result) {
@@ -401,7 +402,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 
 	if(utilities.isValid(data.host)) {
 		try {
-			hosts.push(freeDNS.formatHost(data.host, ipAddress, true));
+			hosts.push(formatHost(data.host, ipAddress, true));
 		}
 		catch(error) {
 			error.status = 400;
@@ -414,7 +415,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 			for(var i=0;i<data.hosts.length;i++) {
 				host = data.hosts[i];
 
-				hosts.push(freeDNS.formatHost(host, ipAddress, true));
+				hosts.push(formatHost(host, ipAddress, true));
 			}
 		}
 		catch(error) {
@@ -507,7 +508,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 							}),
 							null,
 							{
-								baseUrl: freeDNS.apiAddress,
+								baseUrl: apiAddress,
 								headers: {
 									"Content-Type": "application/xml"
 								}
@@ -517,8 +518,8 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 									return callback(error);
 								}
 
-								host.updated = response.statusCode === 200 && !freeDNS.isError(result);
-								host.message = freeDNS.formatResult(result);
+								host.updated = response.statusCode === 200 && !isError(result);
+								host.message = formatResult(result);
 
 								return callback();
 							}

@@ -27,7 +27,7 @@
   "homepage": "https://github.com/nitro404/free-dns#readme",
   "dependencies": {
     "async": "^2.6.0",
-    "extra-utilities": "^1.1.0",
+    "extra-utilities": "^1.1.2",
     "ip": "^1.1.5",
     "node-envelope": "^1.0.0",
     "sha1": "^1.1.1",
