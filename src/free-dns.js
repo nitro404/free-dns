@@ -104,7 +104,7 @@ function formatHostName(hostName, throwErrors) {
 }
 
 function formatHost(host, ipAddress, throwErrors) {
-	if(typeof ipAddress === "boolean") {
+	if(utilities.isBoolean(ipAddress)) {
 		throwErrors = ipAddress;
 		ipAddress = null;
 	}
@@ -229,7 +229,7 @@ function parseHosts(data, includeToken, callback) {
 					return callback(null, jsonData);
 				}
 
-				if(typeof data !== "string" || data.length === 0) {
+				if(utilities.isEmptyString(data)) {
 					return callback(null, null);
 				}
 
