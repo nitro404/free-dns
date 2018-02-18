@@ -18,7 +18,7 @@ function getValue(data) {
 }
 
 function getToken(data) {
-	var value = freeDNS.getValue(data);
+	var value = getValue(data);
 
 	if(utilities.isEmptyString(value)) {
 		return null;
