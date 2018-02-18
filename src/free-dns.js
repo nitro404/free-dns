@@ -376,21 +376,15 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 	}
 
 	if(!utilities.isObject(data)) {
-		var error = new Error("Missing or invalid data passed to FreeDNS update function.");
-		error.status = 400;
-		return callback(error);
+		return callback(new Error("Missing or invalid data passed to FreeDNS update function."));
 	}
 
 	if(utilities.isValid(data.host) && utilities.isValid(data.hosts)) {
-		var error = new Error("Both host and host data attributes specified, please specify one or the other.");
-		error.status = 400;
-		return callback(error);
+		return callback(new Error("Both host and host data attributes specified, please specify one or the other."));
 	}
 
 	if(utilities.isValid(data.hosts) && utilities.isEmptyArray(data.hosts)) {
-		var error = new Error("Hosts list cannot be empty.");
-		error.status = 400;
-		return callback(error);
+		return callback(new Error("Hosts list cannot be empty."));
 	}
 
 	if(utilities.isValid(data.ipAddress)) {
@@ -405,7 +399,6 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 			hosts.push(formatHost(data.host, ipAddress, true));
 		}
 		catch(error) {
-			error.status = 400;
 			return callback(error);
 		}
 	}
@@ -419,15 +412,12 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 			}
 		}
 		catch(error) {
-			error.status = 400;
 			return callback(error);
 		}
 	}
 
 	if(hosts.length === 0) {
-		var error = new Error("No host(s) specified!");
-		error.status = 400;
-		return callback(error);
+		return callback(new Error("No host(s) specified!"));
 	}
 
 	var hostData = [];
@@ -436,9 +426,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 		host = hosts[i];
 
 		if(ip.isPrivate(host.ipAddress)) {
-			var error = new Error("Cannot use private IP address " + host.ipAddress + " for host: " + host.name + ".");
-			error.status = 400;
-			return callback(error);
+			return callback(new Error("Cannot use private IP address " + host.ipAddress + " for host: " + host.name + "."));
 		}
 
 		hostData.push({
@@ -488,9 +476,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 					}
 
 					if(!validHostName) {
-						var error = new Error("Host name not found: \"" + hostToUpdate.name);
-						error.status = 400;
-						return callback(error);
+						return callback(new Error("Host name not found: \"" + hostToUpdate.name + "\"."));
 					}
 				}
 
