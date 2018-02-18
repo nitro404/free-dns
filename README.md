@@ -3,7 +3,7 @@
 [![NPM version][npm-version-image]][npm-url]
 [![Build Status][build-status-image]][build-status-url]
 [![Coverage Status][coverage-image]][coverage-url]
-[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![Known Vulnerabilities][vulnerabilities-image]][vulnerabilities-url]
 [![Downloads][npm-downloads-image]][npm-url]
 
 A wrapper for the FreeDNS API.
@@ -42,6 +42,17 @@ To install this module:
 npm install free-dns
 ```
 
+## Building
+
+To build the distribution files for this module:
+```bash
+npm run build
+```
+or
+```bash
+gulp build
+```
+
 [npm-url]: https://www.npmjs.com/package/free-dns
 [npm-version-image]: https://img.shields.io/npm/v/free-dns.svg
 [npm-downloads-image]: http://img.shields.io/npm/dm/free-dns.svg
@@ -52,5 +63,5 @@ npm install free-dns
 [coverage-url]: https://coveralls.io/github/nitro404/free-dns?branch=master
 [coverage-image]: https://coveralls.io/repos/github/nitro404/free-dns/badge.svg?branch=master
 
-[snyk-url]: https://snyk.io/test/github/nitro404/free-dns?targetFile=package.json
-[snyk-image]: https://snyk.io/test/github/nitro404/free-dns/badge.svg?targetFile=package.json
+[vulnerabilities-url]: https://snyk.io/test/github/nitro404/free-dns?targetFile=package.json
+[vulnerabilities-image]: https://snyk.io/test/github/nitro404/free-dns/badge.svg?targetFile=package.json

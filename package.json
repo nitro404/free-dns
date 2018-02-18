@@ -2,9 +2,14 @@
   "name": "free-dns",
   "version": "1.0.2",
   "description": "A wrapper for the FreeDNS API.",
-  "main": "src/free-dns.js",
+  "main": "dist/free-dns.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "lint": "gulp lint",
+    "test": "mocha",
+    "coverage": "gulp coverage",
+    "coveralls": "npm run coverage -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "security": "gulp security"
   },
   "repository": {
     "type": "git",
@@ -34,5 +39,9 @@
     "validator": "^9.4.0",
     "xml": "^1.0.1",
     "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "gulp-fabricator": "^1.0.1"
   }
 }

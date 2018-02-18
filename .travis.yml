@@ -1,0 +1,18 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - "stable"
+  - "8"
+  - "6"
+  - "4"
+
+before_install:
+  - npm install -g mocha
+
+after_success:
+  - npm run coveralls
+
+script:
+  - npm test

@@ -3,6 +3,7 @@ bower_components
 test
 coverage
 .sass-cache
+.coveralls.yml
 package-lock.json
 yarn.lock
 gulpfile.js
