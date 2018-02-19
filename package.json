@@ -1,6 +1,6 @@
 {
   "name": "free-dns",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A wrapper for the FreeDNS API.",
   "main": "dist/free-dns.js",
   "scripts": {
