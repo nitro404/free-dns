@@ -1,3 +1,5 @@
+"use strict";
+
 global.utilities = undefined;
 
 var freeDNS = require("../dist/free-dns.js");
