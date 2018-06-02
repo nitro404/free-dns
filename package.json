@@ -31,17 +31,17 @@
   },
   "homepage": "https://github.com/nitro404/free-dns#readme",
   "dependencies": {
-    "async": "^2.6.0",
-    "extra-utilities": "^1.1.2",
+    "async": "^2.6.1",
+    "extra-utilities": "^1.2.14",
     "ip": "^1.1.5",
-    "node-envelope": "^1.0.0",
+    "node-envelope": "^1.0.7",
     "sha1": "^1.1.1",
-    "validator": "^9.4.0",
+    "validator": "^9.4.1",
     "xml": "^1.0.1",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "gulp-fabricator": "^1.0.1"
+    "gulp-fabricator": "^1.0.4"
   }
 }
