@@ -1,3 +1,5 @@
+"use strict";
+
 var validator = require("validator");
 var async = require("async");
 var sha1 = require("sha1");
@@ -10,7 +12,7 @@ var envelope = require("node-envelope");
 var freeDNS = { };
 
 var apiAddress = "https://freedns.afraid.org";
-var interface = "xml";
+var apiInterface = "xml";
 var apiKey = null;
 
 function getValue(data) {
@@ -79,7 +81,7 @@ function formatIPV4Address(ipAddress, throwErrors) {
 	}
 
 	return formattedIPAddress;
-};
+}
 
 function formatHostName(hostName, throwErrors) {
 	if(typeof hostName !== "string") {
@@ -203,13 +205,13 @@ function parseHosts(data, includeToken, callback) {
 						var formattedHosts = [];
 
 						if(Array.isArray) {
-							for(var i=0;i<hosts.length;i++) {
+							for(var i = 0; i < hosts.length; i++) {
 								host = hosts[i];
 
 								formattedHost = {
 									name: getValue(host.host),
 									ipAddress: getValue(host.address)
-								}
+								};
 
 								if(formattedIncludeToken) {
 									formattedHost.url = getValue(host.url);
@@ -238,7 +240,7 @@ function parseHosts(data, includeToken, callback) {
 				var lines = data.split(/\r?\n/g);
 				var parts = null;
 
-				for(var i=0;i<lines.length;i++) {
+				for(var i = 0; i < lines.length; i++) {
 					line = lines[i];
 
 					parts = line.match(/([^|]+)/g);
@@ -335,8 +337,8 @@ freeDNS.getHosts = function(includeToken, callback) {
 		sha: apiKey
 	};
 
-	if(interface !== "ascii") {
-		query.style = interface;
+	if(apiInterface !== "ascii") {
+		query.style = apiInterface;
 	}
 
 	return envelope.get(
@@ -360,7 +362,7 @@ freeDNS.getHosts = function(includeToken, callback) {
 
 					return callback(null, result);
 				}
-			)
+			);
 		}
 	);
 };
@@ -405,7 +407,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 
 	if(utilities.isValid(data.hosts)) {
 		try {
-			for(var i=0;i<data.hosts.length;i++) {
+			for(var i = 0; i < data.hosts.length; i++) {
 				host = data.hosts[i];
 
 				hosts.push(formatHost(host, ipAddress, true));
@@ -422,7 +424,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 
 	var hostData = [];
 
-	for(var i=0;i<hosts.length;i++) {
+	for(var i = 0; i < hosts.length; i++) {
 		host = hosts[i];
 
 		if(ip.isPrivate(host.ipAddress)) {
@@ -456,11 +458,11 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 				var currentHost = null;
 				var validHostName = null;
 
-				for(var i=0;i<hosts.length;i++) {
+				for(var i = 0; i < hosts.length; i++) {
 					hostToUpdate = hosts[i];
 					validHostName = false;
 
-					for(var j=0;j<currentHosts.length;j++) {
+					for(var j = 0; j < currentHosts.length; j++) {
 						currentHost = currentHosts[j];
 
 						if(hostToUpdate.name === currentHost.name) {
