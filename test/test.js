@@ -2,10 +2,10 @@
 
 global.utilities = undefined;
 
-var freeDNS = require("../dist/free-dns.js");
-var utilities = require("extra-utilities");
-var chai = require("chai");
-var expect = chai.expect;
+const freeDNS = require("../src/free-dns.js");
+const utilities = require("extra-utilities");
+const chai = require("chai");
+const expect = chai.expect;
 
 describe("Free DNS", function() {
 	describe("setup", function() {

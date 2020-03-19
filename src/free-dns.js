@@ -1,32 +1,32 @@
 "use strict";
 
-var validator = require("validator");
-var async = require("async");
-var sha1 = require("sha1");
-var xml = require("xml");
-var xml2js = require("xml2js");
-var ip = require("ip");
-var utilities = require("extra-utilities");
-var envelope = require("node-envelope");
+const validator = require("validator");
+const async = require("async");
+const sha1 = require("sha1");
+const xml = require("xml");
+const xml2js = require("xml2js");
+const ip = require("ip");
+const utilities = require("extra-utilities");
+const envelope = require("node-envelope");
 
-var freeDNS = { };
+const freeDNS = { };
 
-var apiAddress = "https://freedns.afraid.org";
-var apiInterface = "xml";
-var apiKey = null;
+const apiAddress = "https://freedns.afraid.org";
+const apiInterface = "xml";
+let apiKey = null;
 
 function getValue(data) {
 	return utilities.isNonEmptyArray(data) ? data[0] : data;
 }
 
 function getToken(data) {
-	var value = getValue(data);
+	const value = getValue(data);
 
 	if(utilities.isEmptyString(value)) {
 		return null;
 	}
 
-	var parts = value.match(/[^?]+/g);
+	const parts = value.match(/[^?]+/g);
 
 	if(utilities.isEmptyArray(parts) || parts.length !== 2) {
 		return null;
@@ -44,7 +44,7 @@ function formatResult(data) {
 }
 
 function isError(data) {
-	var formattedData = formatResult(data);
+	const formattedData = formatResult(data);
 
 	if(formattedData === null) {
 		return null;
@@ -62,7 +62,7 @@ function formatIPV4Address(ipAddress, throwErrors) {
 		return null;
 	}
 
-	var formattedIPAddress = ipAddress.trim();
+	const formattedIPAddress = ipAddress.trim();
 
 	if(formattedIPAddress.length === 0) {
 		if(throwErrors) {
@@ -92,7 +92,7 @@ function formatHostName(hostName, throwErrors) {
 		return null;
 	}
 
-	var formattedHostName = hostName.trim().toLowerCase();
+	const formattedHostName = hostName.trim().toLowerCase();
 
 	if(formattedHostName.length === 0) {
 		if(throwErrors) {
@@ -112,8 +112,8 @@ function formatHost(host, ipAddress, throwErrors) {
 	}
 
 	if(typeof host === "string") {
-		var formattedHostName = formatHostName(host, throwErrors);
-		var formattedIPAddress = formatIPV4Address(ipAddress, throwErrors);
+		const formattedHostName = formatHostName(host, throwErrors);
+		const formattedIPAddress = formatIPV4Address(ipAddress, throwErrors);
 
 		if(formattedHostName === null) {
 			if(throwErrors) {
@@ -137,8 +137,8 @@ function formatHost(host, ipAddress, throwErrors) {
 		};
 	}
 	else if(utilities.isObject(host)) {
-		var formattedHostName = formatHostName(host.name, throwErrors);
-		var formattedIPAddress = null;
+		const formattedHostName = formatHostName(host.name, throwErrors);
+		let formattedIPAddress = null;
 
 		if(utilities.isValid(host.ipAddress)) {
 			formattedIPAddress = formatIPV4Address(host.ipAddress, throwErrors);
@@ -179,7 +179,7 @@ function parseHosts(data, includeToken, callback) {
 		throw new Error("Missing callback function!");
 	}
 
-	var formattedIncludeToken = utilities.parseBoolean(includeToken);
+	let  formattedIncludeToken = utilities.parseBoolean(includeToken);
 
 	if(formattedIncludeToken === null) {
 		formattedIncludeToken = false;
@@ -199,13 +199,13 @@ function parseHosts(data, includeToken, callback) {
 							return callback(new Error("Invalid XML host data."));
 						}
 
-						var host = null;
-						var hosts = jsonData.xml.item;
-						var formattedHost = null;
-						var formattedHosts = [];
+						let  host = null;
+						const hosts = jsonData.xml.item;
+						let formattedHost = null;
+						const formattedHosts = [];
 
 						if(Array.isArray) {
-							for(var i = 0; i < hosts.length; i++) {
+							for(const i = 0; i < hosts.length; i++) {
 								host = hosts[i];
 
 								formattedHost = {
@@ -235,12 +235,12 @@ function parseHosts(data, includeToken, callback) {
 					return callback(null, null);
 				}
 
-				var hosts = [];
-				var line = null;
-				var lines = data.split(/\r?\n/g);
-				var parts = null;
+				const hosts = [];
+				let  line = null;
+				const lines = data.split(/\r?\n/g);
+				let  parts = null;
 
-				for(var i = 0; i < lines.length; i++) {
+				for(const i = 0; i < lines.length; i++) {
 					line = lines[i];
 
 					parts = line.match(/([^|]+)/g);
@@ -270,7 +270,7 @@ function parseHosts(data, includeToken, callback) {
 }
 
 freeDNS.setup = function(options) {
-	var formattedOptions = utilities.formatObject(
+	const formattedOptions = utilities.formatObject(
 		options,
 		{
 			key: {
@@ -326,13 +326,13 @@ freeDNS.getHosts = function(includeToken, callback) {
 		return callback(new Error("Missing FreeDNS API key."));
 	}
 
-	var formattedIncludeToken = utilities.parseBoolean(includeToken);
+	let formattedIncludeToken = utilities.parseBoolean(includeToken);
 
 	if(formattedIncludeToken === null) {
 		formattedIncludeToken = false;
 	}
 
-	var query = {
+	const query = {
 		action: "getdyndns",
 		sha: apiKey
 	};
@@ -393,8 +393,8 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 		ipAddress = data.ipAddress;
 	}
 
-	var host = null;
-	var hosts = [];
+	let host = null;
+	const hosts = [];
 
 	if(utilities.isValid(data.host)) {
 		try {
@@ -407,7 +407,7 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 
 	if(utilities.isValid(data.hosts)) {
 		try {
-			for(var i = 0; i < data.hosts.length; i++) {
+			for(let  i = 0; i < data.hosts.length; i++) {
 				host = data.hosts[i];
 
 				hosts.push(formatHost(host, ipAddress, true));
@@ -422,9 +422,9 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 		return callback(new Error("No host(s) specified!"));
 	}
 
-	var hostData = [];
+	const hostData = [];
 
-	for(var i = 0; i < hosts.length; i++) {
+	for(let  i = 0; i < hosts.length; i++) {
 		host = hosts[i];
 
 		if(ip.isPrivate(host.ipAddress)) {
@@ -454,15 +454,15 @@ freeDNS.updateHosts = function(data, ipAddress, callback) {
 				);
 			},
 			function(currentHosts, callback) {
-				var hostToUpdate = null;
-				var currentHost = null;
-				var validHostName = null;
+				let  hostToUpdate = null;
+				let  currentHost = null;
+				let  validHostName = null;
 
-				for(var i = 0; i < hosts.length; i++) {
+				for(let  i = 0; i < hosts.length; i++) {
 					hostToUpdate = hosts[i];
 					validHostName = false;
 
-					for(var j = 0; j < currentHosts.length; j++) {
+					for(let  j = 0; j < currentHosts.length; j++) {
 						currentHost = currentHosts[j];
 
 						if(hostToUpdate.name === currentHost.name) {

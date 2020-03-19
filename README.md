@@ -13,7 +13,7 @@ This module is unofficial and is in no way associated with [FreeDNS](https://fre
 ## Server-Side Usage
 
 ```javascript
-var freeDNS = require("free-dns");
+const freeDNS = require("free-dns");
 
 freeDNS.setup({
 	userName: "nitro404",
