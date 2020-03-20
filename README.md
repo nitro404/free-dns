@@ -4,7 +4,11 @@
 [![Build Status][build-status-image]][build-status-url]
 [![Coverage Status][coverage-image]][coverage-url]
 [![Known Vulnerabilities][vulnerabilities-image]][vulnerabilities-url]
+[![Dependencies][dependencies-image]][dependencies-url]
 [![Downloads][npm-downloads-image]][npm-url]
+[![Install Size][install-size-image]][install-size-url]
+[![Contributors][contributors-image]][contributors-url]
+[![Pull Requests Welcome][pull-requests-image]][pull-requests-url]
 
 A wrapper for the FreeDNS API.
 
@@ -65,3 +69,15 @@ gulp build
 
 [vulnerabilities-url]: https://snyk.io/test/github/nitro404/free-dns?targetFile=package.json
 [vulnerabilities-image]: https://snyk.io/test/github/nitro404/free-dns/badge.svg?targetFile=package.json
+
+[dependencies-url]: https://david-dm.org/nitro404/free-dns
+[dependencies-image]: https://img.shields.io/david/nitro404/free-dns.svg
+
+[install-size-url]: https://packagephobia.now.sh/result?p=free-dns
+[install-size-image]: https://badgen.net/packagephobia/install/free-dns
+
+[contributors-url]: https://github.com/nitro404/free-dns/graphs/contributors
+[contributors-image]: https://img.shields.io/github/contributors/nitro404/free-dns.svg
+
+[pull-requests-url]: https://github.com/nitro404/free-dns/pulls
+[pull-requests-image]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
