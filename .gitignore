@@ -1,6 +1,7 @@
 node_modules
 bower_components
 coverage
+.nyc_output
 .sass-cache
 .coveralls.yml
 yarn.lock
